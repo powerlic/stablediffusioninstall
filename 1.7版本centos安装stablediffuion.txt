@@ -1,0 +1,58 @@
+1.7版本centos安装
+
+安装过程：
+1. 创建一个目录，比如mkdir SD1.7
+
+2. 下载webui.sh
+
+wget -q https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh
+使用6022服务器上的/home/licheng/git/SD1.8/webui.sh
+
+3. 安装
+cd /home/licheng/git/SD1.8/
+
+sh webui.sh
+
+脚本会创建
+1）stable-diffusion-webui目录, 并从远程仓库拉取 git clone 该库
+
+2）先安装依赖，比如torch等库，
+如果安装的torch有问题，就修改webui.sh中的Torch源地址，比如
+export TORCH_COMMAND="pip install torch==2.0.0+cu117 torchvision==0.15.1+cu117 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu117"
+
+3）然后创建stable-diffusion-webui/repositories，在里面git clone 一些开源项目，比如
+BLIP  CodeFormer  generative-models  k-diffusion  stable-diffusion-stability-ai
+clone 如果网不通的话，就删掉对应的库，然后重新人工输入git clone xxxx 进行安装，这个安装过程会有提示
+
+
+4）下载过程中的需要将
+
+stable-diffusion-webui/modules中的launch_utils.py中的git -C 改成git -c， 以适用centos系统
+
+并注释掉一些git checkout 代码，具体代码我放git 上了
+
+然后重新sh webui.sh
+
+
+
+5）可能需要装个dctorch,  pip install dctorch就可以了
+
+
+
+6) 可以正常启动了
+
+
+
+其他
+
+
+1.遇到下面问题，可以按建议修复
+
+  File "/home/licheng/git/SD1.8/stable-diffusion-webui/venv/lib/python3.10/site-packages/cv2/__init__.py", line 102, in bootstrap
+    import cv2
+ImportError: dlopen: cannot load any more object with static TLS
+
+you can try this method, add "import cv2" at the top of "stable-diffusion-webui/modules/launch_utils.py"
+
+2.显示VAE
+https://www.dongwm.com/post/stable-diffusion-vae/
